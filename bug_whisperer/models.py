@@ -51,3 +51,12 @@ class IssueReport:
             repository_url=str(repository.get("html_url") or ""),
             sender=str(sender.get("login") or "unknown"),
         )
+
+
+@dataclass(frozen=True)
+class TriageResult:
+    summary: str
+    category: str
+    severity: str
+    first_step: str
+    missing_info: list[str]

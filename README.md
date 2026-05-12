@@ -10,7 +10,7 @@ AI-powered first-pass triage for GitHub Issue webhooks.
 | Task 2 - Set up webhook receiver | Completed |
 | Task 3 - Extract and validate payload | Completed |
 | Task 4 - Design AI prompt | Completed |
-| Task 5 - Call AI API and parse response | Pending |
+| Task 5 - Call AI API and parse response | Completed |
 | Task 6 - Format GitHub comment | Pending |
 | Task 7 - Post comment to GitHub | Pending |
 | Task 8 - Test full flow end to end | Pending |
@@ -42,3 +42,13 @@ curl -X POST http://127.0.0.1:8000/webhook \
 
 `MIN_ISSUE_BODY_LENGTH` controls the minimum issue description length. The default
 is `30` characters.
+
+## Environment Variables
+
+| Name | Required | Purpose |
+| --- | --- | --- |
+| `GEMINI_API_KEY` | Yes, unless `AI_PROVIDER=mock` | Google Gemini API key used for the free AI REST call. |
+| `GEMINI_MODEL` | No | Gemini model name. Defaults to `gemini-2.5-flash-lite`. |
+| `AI_PROVIDER` | No | Set to `mock` for local testing without calling an AI API. |
+| `MOCK_AI_RESPONSE` | No | JSON string returned when `AI_PROVIDER=mock`. |
+| `MIN_ISSUE_BODY_LENGTH` | No | Minimum useful issue description length. Defaults to `30`. |

@@ -9,7 +9,9 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
 
+from bug_whisperer.ai_client import AIClientError, call_ai, parse_ai_response
 from bug_whisperer.payload import extract_issue_report, validation_error
+from bug_whisperer.prompt import build_prompt
 
 
 LOGGER = logging.getLogger("bug_whisperer")
@@ -29,6 +31,15 @@ def process_webhook(payload: dict[str, Any]) -> None:
         report.repository_full_name,
         report.author,
     )
+    prompt = build_prompt(report)
+    try:
+        raw_ai_response = call_ai(prompt)
+        triage = parse_ai_response(raw_ai_response)
+    except AIClientError as exc:
+        LOGGER.error("Stopping webhook processing for issue #%s: %s", report.issue_number, exc)
+        return
+
+    LOGGER.info("AI triage parsed for issue #%s: %s", report.issue_number, triage.summary)
 
 
 def worker() -> None:
