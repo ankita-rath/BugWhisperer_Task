@@ -7,7 +7,7 @@ AI-powered first-pass triage for GitHub Issue webhooks.
 | Task | Status |
 | --- | --- |
 | Task 1 - Understand the incoming payload | Completed |
-| Task 2 - Set up webhook receiver | Pending |
+| Task 2 - Set up webhook receiver | Completed |
 | Task 3 - Extract and validate payload | Pending |
 | Task 4 - Design AI prompt | Pending |
 | Task 5 - Call AI API and parse response | Pending |
@@ -23,3 +23,11 @@ webhook payload. These fields are enough to understand the bug, validate whether
 there is useful detail to triage, and post the final AI-generated comment back to
 the correct GitHub Issue.
 
+## Run Locally
+
+```bash
+python -m bug_whisperer.server
+```
+
+By default the server listens on `http://127.0.0.1:8000/webhook`. Override
+`HOST`, `PORT`, and `LOG_LEVEL` with environment variables if needed.
