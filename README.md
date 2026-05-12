@@ -12,7 +12,7 @@ AI-powered first-pass triage for GitHub Issue webhooks.
 | Task 4 - Design AI prompt | Completed |
 | Task 5 - Call AI API and parse response | Completed |
 | Task 6 - Format GitHub comment | Completed |
-| Task 7 - Post comment to GitHub | Pending |
+| Task 7 - Post comment to GitHub | Completed |
 | Task 8 - Test full flow end to end | Pending |
 
 ## Chosen Payload Fields
@@ -51,4 +51,7 @@ is `30` characters.
 | `GEMINI_MODEL` | No | Gemini model name. Defaults to `gemini-2.5-flash-lite`. |
 | `AI_PROVIDER` | No | Set to `mock` for local testing without calling an AI API. |
 | `MOCK_AI_RESPONSE` | No | JSON string returned when `AI_PROVIDER=mock`. |
+| `GITHUB_TOKEN` | Yes | GitHub Personal Access Token used to post the issue comment. |
+| `GITHUB_DRY_RUN` | No | Set to `true` to skip the actual GitHub comment API call. |
+| `GITHUB_API_URL` | No | Override the GitHub API base URL. Defaults to `https://api.github.com`. |
 | `MIN_ISSUE_BODY_LENGTH` | No | Minimum useful issue description length. Defaults to `30`. |

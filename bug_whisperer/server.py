@@ -11,6 +11,7 @@ from typing import Any
 
 from bug_whisperer.ai_client import AIClientError, call_ai, parse_ai_response
 from bug_whisperer.comment_formatter import format_github_comment
+from bug_whisperer.github_client import GitHubClientError, post_issue_comment
 from bug_whisperer.payload import extract_issue_report, validation_error
 from bug_whisperer.prompt import build_prompt
 
@@ -41,7 +42,13 @@ def process_webhook(payload: dict[str, Any]) -> None:
         return
 
     comment_body = format_github_comment(triage)
-    LOGGER.info("Formatted GitHub comment for issue #%s:\n%s", report.issue_number, comment_body)
+    try:
+        comment_url = post_issue_comment(report, comment_body)
+    except GitHubClientError as exc:
+        LOGGER.error("Could not post GitHub comment for issue #%s: %s", report.issue_number, exc)
+        return
+
+    LOGGER.info("Posted GitHub triage comment for issue #%s: %s", report.issue_number, comment_url)
 
 
 def worker() -> None:
