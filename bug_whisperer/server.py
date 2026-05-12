@@ -10,6 +10,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
 
 from bug_whisperer.ai_client import AIClientError, call_ai, parse_ai_response
+from bug_whisperer.comment_formatter import format_github_comment
 from bug_whisperer.payload import extract_issue_report, validation_error
 from bug_whisperer.prompt import build_prompt
 
@@ -39,7 +40,8 @@ def process_webhook(payload: dict[str, Any]) -> None:
         LOGGER.error("Stopping webhook processing for issue #%s: %s", report.issue_number, exc)
         return
 
-    LOGGER.info("AI triage parsed for issue #%s: %s", report.issue_number, triage.summary)
+    comment_body = format_github_comment(triage)
+    LOGGER.info("Formatted GitHub comment for issue #%s:\n%s", report.issue_number, comment_body)
 
 
 def worker() -> None:
