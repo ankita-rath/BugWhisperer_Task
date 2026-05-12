@@ -8,7 +8,7 @@ AI-powered first-pass triage for GitHub Issue webhooks.
 | --- | --- |
 | Task 1 - Understand the incoming payload | Completed |
 | Task 2 - Set up webhook receiver | Completed |
-| Task 3 - Extract and validate payload | Pending |
+| Task 3 - Extract and validate payload | Completed |
 | Task 4 - Design AI prompt | Pending |
 | Task 5 - Call AI API and parse response | Pending |
 | Task 6 - Format GitHub comment | Pending |
@@ -31,3 +31,14 @@ python -m bug_whisperer.server
 
 By default the server listens on `http://127.0.0.1:8000/webhook`. Override
 `HOST`, `PORT`, and `LOG_LEVEL` with environment variables if needed.
+
+Test the receiver with the sample payload:
+
+```bash
+curl -X POST http://127.0.0.1:8000/webhook \
+  -H "Content-Type: application/json" \
+  --data @data/sample_issue_webhook.json
+```
+
+`MIN_ISSUE_BODY_LENGTH` controls the minimum issue description length. The default
+is `30` characters.

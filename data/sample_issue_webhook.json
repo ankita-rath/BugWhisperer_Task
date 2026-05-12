@@ -1,0 +1,27 @@
+{
+  "action": "opened",
+  "issue": {
+    "number": 42,
+    "title": "Checkout fails when applying discount code",
+    "body": "When I add the SAVE20 discount code during checkout, the page shows a spinner forever after clicking Apply. Expected behavior: the discount should apply and the order summary should update. This happens on Chrome 124 and Safari 17.",
+    "user": {
+      "login": "qa-reporter"
+    },
+    "labels": [
+      {
+        "name": "bug"
+      },
+      {
+        "name": "checkout"
+      }
+    ]
+  },
+  "repository": {
+    "full_name": "ankita-rath/BugWhisperer_Task",
+    "html_url": "https://github.com/ankita-rath/BugWhisperer_Task"
+  },
+  "sender": {
+    "login": "qa-reporter"
+  }
+}
+

@@ -7,13 +7,26 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
 
+from bug_whisperer.payload import extract_issue_report, validation_error
+
 
 LOGGER = logging.getLogger("bug_whisperer")
 WEBHOOK_QUEUE: queue.Queue[dict[str, Any]] = queue.Queue()
 
 
 def process_webhook(payload: dict[str, Any]) -> None:
-    LOGGER.info("Webhook payload queued for processing: action=%s", payload.get("action"))
+    report = extract_issue_report(payload)
+    error = validation_error(report)
+    if error:
+        LOGGER.info("Skipping webhook for issue #%s: %s", report.issue_number, error)
+        return
+
+    LOGGER.info(
+        "Validated issue #%s from %s/%s",
+        report.issue_number,
+        report.repository_full_name,
+        report.author,
+    )
 
 
 def worker() -> None:
@@ -87,4 +100,3 @@ def run_server() -> None:
 
 if __name__ == "__main__":
     run_server()
-
