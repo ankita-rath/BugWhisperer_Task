@@ -128,13 +128,3 @@ Active: checked
    webhook received, payload validated, AI response parsed, and GitHub comment
    posted.
 
-## Screen Recording Checklist
-
-Record one continuous flow showing:
-
-1. The server running locally.
-2. ngrok running with the public HTTPS URL.
-3. The GitHub webhook configured with the ngrok `/webhook` URL.
-4. A new GitHub Issue being created.
-5. The terminal logs showing the webhook received and processed.
-6. The AI-generated markdown comment appearing on the GitHub Issue.
