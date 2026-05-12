@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Any
 
@@ -49,4 +51,3 @@ class IssueReport:
             repository_url=str(repository.get("html_url") or ""),
             sender=str(sender.get("login") or "unknown"),
         )
-

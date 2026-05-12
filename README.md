@@ -9,7 +9,7 @@ AI-powered first-pass triage for GitHub Issue webhooks.
 | Task 1 - Understand the incoming payload | Completed |
 | Task 2 - Set up webhook receiver | Completed |
 | Task 3 - Extract and validate payload | Completed |
-| Task 4 - Design AI prompt | Pending |
+| Task 4 - Design AI prompt | Completed |
 | Task 5 - Call AI API and parse response | Pending |
 | Task 6 - Format GitHub comment | Pending |
 | Task 7 - Post comment to GitHub | Pending |

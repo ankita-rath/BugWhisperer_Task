@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import os
 
@@ -44,4 +46,3 @@ def validation_error(report: IssueReport) -> str | None:
         return f"issue description is too short ({len(body)} chars; minimum {min_length})"
 
     return None
-
