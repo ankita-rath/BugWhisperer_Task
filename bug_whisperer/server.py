@@ -48,7 +48,10 @@ def process_webhook(payload: dict[str, Any]) -> None:
         LOGGER.error("Could not post GitHub comment for issue #%s: %s", report.issue_number, exc)
         return
 
-    LOGGER.info("Posted GitHub triage comment for issue #%s: %s", report.issue_number, comment_url)
+    if comment_url:
+        LOGGER.info("Posted GitHub triage comment for issue #%s: %s", report.issue_number, comment_url)
+    else:
+        LOGGER.info("GitHub triage comment prepared for issue #%s", report.issue_number)
 
 
 def worker() -> None:
@@ -117,7 +120,12 @@ def run_server() -> None:
 
     httpd = ThreadingHTTPServer((host, port), WebhookHandler)
     LOGGER.info("Bug Whisperer listening on http://%s:%s/webhook", host, port)
-    httpd.serve_forever()
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt:
+        LOGGER.info("Shutting down Bug Whisperer")
+    finally:
+        httpd.server_close()
 
 
 if __name__ == "__main__":
