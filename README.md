@@ -1,59 +1,77 @@
-# Bug Whisperer
+# 🐛 Bug Whisperer
 
-AI-powered first-pass triage for GitHub Issue webhooks.
+An AI-powered triage assistant that automatically analyzes GitHub issues and provides instant AI-generated feedback through comments.
 
-## Assignment Progress
+**What it does:** When someone opens an issue, Bug Whisperer listens via webhook, analyzes the issue with AI, and posts a helpful triage comment back on GitHub—all automatically.
 
-| Task | Status |
-| --- | --- |
-| Task 1 - Understand the incoming payload | Completed |
-| Task 2 - Set up webhook receiver | Completed |
-| Task 3 - Extract and validate payload | Completed |
-| Task 4 - Design AI prompt | Completed |
-| Task 5 - Call AI API and parse response | Completed |
-| Task 6 - Format GitHub comment | Completed |
-| Task 7 - Post comment to GitHub | Completed |
-| Task 8 - Test full flow end to end | Completed |
+---
 
-## Chosen Payload Fields
+## ✨ Features
 
-The service extracts the issue action, issue number, title, body, author, labels,
-repository full name, repository URL, and webhook sender from the GitHub Issues
-webhook payload. These fields are enough to understand the bug, validate whether
-there is useful detail to triage, and post the final AI-generated comment back to
-the correct GitHub Issue.
+- **Automatic Issue Analysis** – Uses Google Gemini API to understand bug reports
+- **Smart Triage Comments** – Posts formatted, actionable feedback directly on GitHub issues
+- **Webhook-Ready** – Integrates seamlessly with GitHub webhook events
+- **Lightweight** – Built with only Python standard library (Python 3.9+)
+- **Flexible Configuration** – Easily customize via environment variables
+- **Mock Mode for Testing** – Test locally without spending API credits
 
-## Project Structure
+---
 
-```text
+## 📋 What Gets Extracted
+
+The webhook listener extracts these key fields from each GitHub issue:
+- Issue action and number
+- Title and description
+- Author and labels
+- Repository info and webhook sender
+
+These fields are all you need to understand the bug and generate meaningful triage feedback.
+
+---
+
+## 🏗️ Project Structure
+
+```
 bug_whisperer/
-  ai_client.py          # Gemini REST call and strict JSON parsing
-  comment_formatter.py  # Markdown comment formatting
-  github_client.py      # GitHub issue comment REST call
-  models.py             # Payload and triage dataclasses
-  payload.py            # Extraction and validation
-  prompt.py             # Prompt template loader/builder
-  server.py             # POST /webhook HTTP server
+├── ai_client.py          # Handles Gemini API calls & JSON parsing
+├── comment_formatter.py  # Formats the response as GitHub markdown
+├── github_client.py      # Posts comments back to GitHub
+├── models.py             # Data models for payloads and responses
+├── payload.py            # Extracts & validates webhook data
+├── prompt.py             # AI prompt template management
+└── server.py             # HTTP webhook receiver
+
 data/
-  sample_issue_webhook.json
+└── sample_issue_webhook.json    # Example webhook payload
+
 prompts/
-  bug_triage_prompt.txt
+└── bug_triage_prompt.txt        # AI system prompt
+
 tests/
-  test_core.py
+└── test_core.py                 # Unit tests
 ```
 
-## Run Locally
+---
 
-Use Python 3.9 or newer. The project uses only the Python standard library.
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.9 or newer
+- A Google Gemini API key (free tier available)
+- A GitHub Personal Access Token (for posting comments)
+
+### Run Locally
 
 ```bash
+# Start the webhook server
 python -m bug_whisperer.server
 ```
 
-By default the server listens on `http://127.0.0.1:8000/webhook`. Override
-`HOST`, `PORT`, and `LOG_LEVEL` with environment variables if needed.
+The server listens on `http://127.0.0.1:8000/webhook` by default.
 
-Test the receiver with the sample payload:
+### Test with Sample Data
+
+In another terminal:
 
 ```bash
 curl -X POST http://127.0.0.1:8000/webhook \
@@ -61,70 +79,133 @@ curl -X POST http://127.0.0.1:8000/webhook \
   --data @data/sample_issue_webhook.json
 ```
 
-`MIN_ISSUE_BODY_LENGTH` controls the minimum issue description length. The default
-is `30` characters.
-
-Run the automated checks:
+### Run Tests
 
 ```bash
 python -m unittest
 ```
 
-## Environment Variables
+---
 
-| Name | Required | Purpose |
-| --- | --- | --- |
-| `GEMINI_API_KEY` | Yes, unless `AI_PROVIDER=mock` | Google Gemini API key used for the free AI REST call. |
-| `GEMINI_MODEL` | No | Gemini model name. Defaults to `gemini-2.5-flash-lite`. |
-| `AI_PROVIDER` | No | Set to `mock` for local testing without calling an AI API. |
-| `MOCK_AI_RESPONSE` | No | JSON string returned when `AI_PROVIDER=mock`. |
-| `GITHUB_TOKEN` | Yes | GitHub Personal Access Token used to post the issue comment. |
-| `GITHUB_DRY_RUN` | No | Set to `true` to skip the actual GitHub comment API call. |
-| `GITHUB_API_URL` | No | Override the GitHub API base URL. Defaults to `https://api.github.com`. |
-| `MIN_ISSUE_BODY_LENGTH` | No | Minimum useful issue description length. Defaults to `30`. |
+## ⚙️ Configuration
 
-## Free AI Service
+### Environment Variables
 
-This implementation uses the Google Gemini Developer API over REST. It supports a
-free tier for small projects and can return structured JSON with
-`responseMimeType=application/json`. Create an API key in Google AI Studio and set
-it as `GEMINI_API_KEY`.
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GEMINI_API_KEY` | Yes* | Your Google Gemini API key |
+| `GEMINI_MODEL` | No | Model to use (default: `gemini-2.5-flash-lite`) |
+| `GITHUB_TOKEN` | Yes | GitHub Personal Access Token |
+| `AI_PROVIDER` | No | Set to `mock` for testing without API calls |
+| `MOCK_AI_RESPONSE` | No | JSON string to return when using mock AI |
+| `GITHUB_DRY_RUN` | No | Set to `true` to skip actually posting to GitHub |
+| `GITHUB_API_URL` | No | Override GitHub API base URL (default: `https://api.github.com`) |
+| `HOST` | No | Server host (default: `127.0.0.1`) |
+| `PORT` | No | Server port (default: `8000`) |
+| `LOG_LEVEL` | No | Logging level (default: `INFO`) |
+| `MIN_ISSUE_BODY_LENGTH` | No | Minimum issue description length (default: `30` chars) |
 
-For local testing without spending API calls:
+*Not required when `AI_PROVIDER=mock`
+
+### Local Testing (No API Costs)
+
+Test everything locally without spending Gemini API credits:
 
 ```bash
 AI_PROVIDER=mock GITHUB_DRY_RUN=true python -m bug_whisperer.server
 ```
 
-## GitHub Webhook Setup
+---
 
-1. Start the server locally:
+## 🌐 Using with Real GitHub Webhooks
+
+Want to set up actual GitHub integration? Here's how:
+
+### 1. **Start the Server**
 
 ```bash
 python -m bug_whisperer.server
 ```
 
-2. Start ngrok in another terminal:
+### 2. **Expose Your Local Server (using ngrok)**
 
 ```bash
 ngrok http 8000
 ```
 
-3. Copy the HTTPS forwarding URL from ngrok and add `/webhook`.
-   Example: `https://example.ngrok-free.app/webhook`.
+This gives you a public URL like `https://example.ngrok-free.app`
 
-4. In the test GitHub repository, open **Settings > Webhooks > Add webhook**.
+### 3. **Add GitHub Webhook**
 
-5. Use these webhook settings:
+In your test GitHub repo:
 
-```text
-Payload URL: https://your-ngrok-url/webhook
-Content type: application/json
-Events: Let me select individual events > Issues
-Active: checked
-```
+1. Go to **Settings > Webhooks > Add webhook**
+2. Fill in these settings:
+   - **Payload URL:** `https://your-ngrok-url/webhook`
+   - **Content type:** `application/json`
+   - **Events:** Select "Issues"
+   - **Active:** ✅ Checked
 
-6. Create a new issue with a useful title and description. The server should log:
-   webhook received, payload validated, AI response parsed, and GitHub comment
-   posted.
+3. Click **Add webhook**
 
+### 4. **Test It Out**
+
+Create a new issue with a good title and description. You should see:
+- Server logs showing webhook received
+- Payload validated
+- AI response generated
+- Comment posted to GitHub ✨
+
+---
+
+## 📚 AI & API Details
+
+### Google Gemini Integration
+
+This project uses the **Google Gemini Developer API** (free tier):
+- No authentication needed beyond the API key
+- Supports structured JSON responses
+- Perfect for triage automation
+
+To get started:
+1. Visit [Google AI Studio](https://aistudio.google.com)
+2. Create an API key
+3. Set it as `GEMINI_API_KEY` environment variable
+
+### Customizing the Prompt
+
+The AI behavior is controlled by `prompts/bug_triage_prompt.txt`. Edit it to change how issues are analyzed.
+
+---
+
+## 📊 Task Completion Status
+
+| Task | Status |
+|------|--------|
+| Understand GitHub webhook payload | ✅ Completed |
+| Build webhook receiver | ✅ Completed |
+| Extract and validate payload | ✅ Completed |
+| Design AI prompt for triage | ✅ Completed |
+| Call Gemini API and parse response | ✅ Completed |
+| Format GitHub comment in markdown | ✅ Completed |
+| Post comment back to GitHub | ✅ Completed |
+| End-to-end testing | ✅ Completed |
+
+---
+
+## 💡 Tips & Tricks
+
+- **Dry Run Mode:** Use `GITHUB_DRY_RUN=true` to test without posting to GitHub
+- **Mock AI:** Use `AI_PROVIDER=mock` to test without Gemini API calls
+- **Adjust Minimum Length:** Increase `MIN_ISSUE_BODY_LENGTH` to only triage detailed issues
+- **Check Logs:** Set `LOG_LEVEL=DEBUG` for detailed logging during development
+
+---
+
+## 📝 License
+
+This project is part of the BugWhisperer assignment.
+
+---
+
+**Questions or issues?** Check the test file (`tests/test_core.py`) for usage examples.
