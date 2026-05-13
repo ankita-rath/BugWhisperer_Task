@@ -1,4 +1,4 @@
-# 🐛 Bug Whisperer
+#  Bug Whisperer
 
 An AI-powered triage assistant that automatically analyzes GitHub issues and provides instant AI-generated feedback through comments.
 
@@ -6,7 +6,7 @@ An AI-powered triage assistant that automatically analyzes GitHub issues and pro
 
 ---
 
-## ✨ Features
+##  Features
 
 - **Automatic Issue Analysis** – Uses Google Gemini API to understand bug reports
 - **Smart Triage Comments** – Posts formatted, actionable feedback directly on GitHub issues
@@ -17,7 +17,7 @@ An AI-powered triage assistant that automatically analyzes GitHub issues and pro
 
 ---
 
-## 📋 What Gets Extracted
+##  What Gets Extracted
 
 The webhook listener extracts these key fields from each GitHub issue:
 - Issue action and number
@@ -29,7 +29,7 @@ These fields are all you need to understand the bug and generate meaningful tria
 
 ---
 
-## 🏗️ Project Structure
+##  Project Structure
 
 ```
 bug_whisperer/
@@ -53,7 +53,7 @@ tests/
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Python 3.9 or newer
@@ -87,7 +87,7 @@ python -m unittest
 
 ---
 
-## ⚙️ Configuration
+##  Configuration
 
 ### Environment Variables
 
@@ -117,7 +117,7 @@ AI_PROVIDER=mock GITHUB_DRY_RUN=true python -m bug_whisperer.server
 
 ---
 
-## 🌐 Using with Real GitHub Webhooks
+##  Using with Real GitHub Webhooks
 
 Want to set up actual GitHub integration? Here's how:
 
@@ -144,7 +144,7 @@ In your test GitHub repo:
    - **Payload URL:** `https://your-ngrok-url/webhook`
    - **Content type:** `application/json`
    - **Events:** Select "Issues"
-   - **Active:** ✅ Checked
+   - **Active:**  Checked
 
 3. Click **Add webhook**
 
@@ -154,11 +154,11 @@ Create a new issue with a good title and description. You should see:
 - Server logs showing webhook received
 - Payload validated
 - AI response generated
-- Comment posted to GitHub ✨
+- Comment posted to GitHub 
 
 ---
 
-## 📚 AI & API Details
+##  AI & API Details
 
 ### Google Gemini Integration
 
@@ -182,18 +182,18 @@ The AI behavior is controlled by `prompts/bug_triage_prompt.txt`. Edit it to cha
 
 | Task | Status |
 |------|--------|
-| Understand GitHub webhook payload | ✅ Completed |
-| Build webhook receiver | ✅ Completed |
-| Extract and validate payload | ✅ Completed |
-| Design AI prompt for triage | ✅ Completed |
-| Call Gemini API and parse response | ✅ Completed |
-| Format GitHub comment in markdown | ✅ Completed |
-| Post comment back to GitHub | ✅ Completed |
-| End-to-end testing | ✅ Completed |
+| Understand GitHub webhook payload | Completed |
+| Build webhook receiver |  Completed |
+| Extract and validate payload |  Completed |
+| Design AI prompt for triage |  Completed |
+| Call Gemini API and parse response |  Completed |
+| Format GitHub comment in markdown |  Completed |
+| Post comment back to GitHub |  Completed |
+| End-to-end testing |  Completed |
 
 ---
 
-## 💡 Tips & Tricks
+##  Tips & Tricks
 
 - **Dry Run Mode:** Use `GITHUB_DRY_RUN=true` to test without posting to GitHub
 - **Mock AI:** Use `AI_PROVIDER=mock` to test without Gemini API calls
@@ -202,7 +202,7 @@ The AI behavior is controlled by `prompts/bug_triage_prompt.txt`. Edit it to cha
 
 ---
 
-## 📝 License
+## License
 
 This project is part of the BugWhisperer assignment.
 
