@@ -2,7 +2,7 @@
 
 An AI-powered triage assistant that automatically analyzes GitHub issues and provides instant AI-generated feedback through comments.
 
-**What it does:** When someone opens an issue, Bug Whisperer listens via webhook, analyzes the issue with AI, and posts a helpful triage comment back on GitHub—all automatically.
+**What it does:** When someone opens an issue, Bug Whisperer listens via webhook, analyzes the issue with AI, and posts a helpful triage comment back on GitHub all automatically.
 
 ---
 
