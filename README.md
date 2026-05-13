@@ -178,7 +178,7 @@ The AI behavior is controlled by `prompts/bug_triage_prompt.txt`. Edit it to cha
 
 ---
 
-## 📊 Task Completion Status
+## Task Completion Status
 
 | Task | Status |
 |------|--------|
